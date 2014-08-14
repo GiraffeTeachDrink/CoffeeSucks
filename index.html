@@ -1,52 +1,61 @@
 <!DOCTYPE html>
 <html>
-
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Coffeesucks : Secret dosen&#39;t last long">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Coffeesucks</title>
-  </head>
-
-  <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/GiraffeTeachDrink/CoffeeSucks">View on GitHub</a>
-
-          <h1 id="project_title">Coffeesucks</h1>
-          <h2 id="project_tagline">Secret dosen&#39;t last long</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/GiraffeTeachDrink/CoffeeSucks/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/GiraffeTeachDrink/CoffeeSucks/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="coffeesucks" class="anchor" href="#coffeesucks"><span class="octicon octicon-link"></span></a>CoffeeSucks</h1>
-
-<p>Secret dosen't last long</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Coffeesucks maintained by <a href="https://github.com/GiraffeTeachDrink">GiraffeTeachDrink</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+</style>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HGIGZtrjNUBCaiaXk6pupV6r"></script>
+<title>添加复杂内容的信息窗口</title>
+</head>
+<body>
+<div id="allmap"></div>
+</body>
 </html>
+<script type="text/javascript">
+
+// 百度地图API功能
+var sContent1 =
+"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>天安门</h4>" + 
+"<img style='float:right;margin:4px' id='imgDemo' src='http://app.baidu.com/map/images/tiananmen.jpg' width='139' height='104' title='天安门'/>" + 
+"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>" + 
+"</div>";
+var sContent2 =
+"<h4 style='margin:0 0 5px 0;padding:0.2em 0'>杭州</h4>" + 
+"<img style='float:right;margin:4px' id='imgDemo' src='http://hiphotos.baidu.com/lvpics/pic/item/6dc09e0a7bd78955b1351ddf.jpg' width='139' height='104' title='天安门'/>" + 
+"<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>杭州，简称杭，是浙江省省会、副省级市，位于中国东南沿海、浙江省北部、钱塘江下游北岸、京杭大运河南端，是浙江省的政治、经济、文化、科教、交通、传媒、通信和金融中心，华东地区重要的经济、科教、文化、金融中心及交通、通信枢纽，自古有“人间天堂”的美誉。</p>" + 
+"</div>";
+var map = new BMap.Map("allmap");
+var point1 = new BMap.Point(116.404, 39.915);
+var marker1 = new BMap.Marker(point1);
+
+
+var infoWindow1 = new BMap.InfoWindow(sContent1);  // 创建信息窗口对象
+
+map.centerAndZoom(point1, 5);
+map.addOverlay(marker1);
+
+marker1.addEventListener("click", function(){          
+   this.openInfoWindow(infoWindow1);
+   //图片加载完毕重绘infowindow
+   document.getElementById('imgDemo').onload = function (){
+       infoWindow1.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+   }
+});
+
+var point2 = new BMap.Point(120.404, 30.915);
+var marker2 = new BMap.Marker(point2);
+map.addOverlay(marker2);
+var infoWindow2 = new BMap.InfoWindow(sContent2);  // 创建信息窗口对象
+marker2.setAnimation(BMAP_ANIMATION_BOUNCE); 
+marker2.addEventListener("click", function(){          
+   this.openInfoWindow(infoWindow2);
+   //图片加载完毕重绘infowindow
+   document.getElementById('imgDemo').onload = function (){
+       infoWindow2.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+   }
+});
+
+
+</script>
