@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta http-equiv="Content-Language" content="zh-cn">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <style type="text/css">
 body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;}
+#l-map{height:100%;width:78%;float:left;border-right:2px solid #bcbcbc;}
+#r-result{height:100%;width:20%;float:left;}
 </style>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=HGIGZtrjNUBCaiaXk6pupV6r"></script>
 <title>GreenTech Map</title>
 </head>
 <body>
-<div id="allmap"></div>
+<div id="l-map"></div>
+<div id="r-result"></div>
 </body>
 </html>
+<br>
 <script type="text/javascript">
 
 // 百度地图API功能
@@ -26,8 +31,45 @@ var sContent2 =
 "<img style='float:right;margin:4px' id='imgDemo' src='http://hiphotos.baidu.com/lvpics/pic/item/6dc09e0a7bd78955b1351ddf.jpg' width='139' height='104' title='天安门'/>" + 
 "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>杭州，简称杭，是浙江省省会、副省级市，位于中国东南沿海、浙江省北部、钱塘江下游北岸、京杭大运河南端，是浙江省的政治、经济、文化、科教、交通、传媒、通信和金融中心，华东地区重要的经济、科教、文化、金融中心及交通、通信枢纽，自古有“人间天堂”的美誉。</p>" + 
 "</div>";
-var map = new BMap.Map("allmap");
-map.enableScrollWheelZoom();    
+var map = new BMap.Map("l-map");
+map.enableScrollWheelZoom();   
+
+var contextMenu = new BMap.ContextMenu(); 
+
+var txtMenuItem = [
+  {
+   text:'放大',
+   callback:function(){map.zoomIn()}
+  },
+  {
+   text:'缩小',
+   callback:function(){map.zoomOut()}
+  },
+  {
+   text:'放置到最大级',
+   callback:function(){map.setZoom(18)}
+  },
+  {
+   text:'查看全国',
+   callback:function(){map.setZoom(4)}
+  },
+  {
+   text:'在此添加标注',
+   callback:function(p){
+    var marker = new BMap.Marker(p), px = map.pointToPixel(p);
+    map.addOverlay(marker);
+   }
+  }
+ ];
+ 
+  for(var i=0; i < txtMenuItem.length; i++){
+  contextMenu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
+  if(i==1 || i==3) {
+   contextMenu.addSeparator();
+  }
+ }
+ map.addContextMenu(contextMenu);
+ 
 var point1 = new BMap.Point(116.404, 39.915);
 var marker1 = new BMap.Marker(point1);
 
@@ -57,6 +99,8 @@ marker2.addEventListener("click", function(){
        infoWindow2.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
    }
 });
-
+map.addEventListener("click", function(e){
+  document.getElementById("r-result").innerHTML = e.point.lng + ", " + e.point.lat;
+})
 
 </script>
